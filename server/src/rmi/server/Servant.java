@@ -23,8 +23,22 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 		return returnList;
 	}
 
-	public List<String> getFilmScreenings(Object filters) {
-		return null;
+	public List<String> getFilmScreenings(Filter filters) {
+		List<String> returnList = Collections.synchronizedList(new ArrayList<String>());
+		cinemaScreenings.forEach(screening -> {
+			if (checkIfScreeningMatchesFilters(((MovieScreening) screening), filters)) {
+				returnList.add(((MovieScreening) screening).getScreeningInfo());
+			}
+		});
+		return returnList;
+	}
+
+	private boolean checkIfScreeningMatchesFilters(MovieScreening screening, Filter filters) {
+		if (filters.isMovieNameValid(screening.getMovieName())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private class init implements Runnable {
@@ -45,10 +59,12 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 		}
 
 		private void addExampleMovieScreenings(SimpleDateFormat dt) throws ParseException {
-			cinemaScreeningsReference.add(new MovieScreening("Forrest Gump", dt.parse("2017.19.08 10:00"), "PG13 3D"));
-			cinemaScreeningsReference.add(new MovieScreening("The Emoji Movie", dt.parse("2017.19.08 8:00"), "PG"));
-			cinemaScreeningsReference.add(new MovieScreening("Spider-Man", dt.parse("2017.19.08 14:00"), "PG13"));
-			cinemaScreeningsReference.add(new MovieScreening("Wolf Warrior", dt.parse("2017.19.08 22:00"), "none"));
+			cinemaScreeningsReference
+					.add(new MovieScreening("Forrest Gump", dt.parse("2017.19.08 10:00"), 1, "PG13 3D"));
+			cinemaScreeningsReference.add(new MovieScreening("The Emoji Movie", dt.parse("2017.19.08 8:00"), 2, "PG"));
+			cinemaScreeningsReference.add(new MovieScreening("Spider-Man", dt.parse("2017.19.08 14:00"), 1, "PG13"));
+			cinemaScreeningsReference.add(new MovieScreening("Spider-Man 2", dt.parse("2017.19.08 16:00"), 2, "PG13"));
+			cinemaScreeningsReference.add(new MovieScreening("Wolf Warrior", dt.parse("2017.19.08 22:00"), 1, "none"));
 		}
 	}
 }
