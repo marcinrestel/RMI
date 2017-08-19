@@ -4,7 +4,11 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
+
 import rmi.common.*;
 
 public class Client {
@@ -30,46 +34,49 @@ public class Client {
 	}
 
 	private void loopForClientAction(commonInterface remoteObject) throws RemoteException {
-		Scanner odczyt = new Scanner(System.in);
+		Scanner s = new Scanner(System.in);
 		int whatToDo;
 		do {
 			printAvailableOptions();
-			whatToDo = odczyt.nextInt();
-			(new Thread(new actionController(whatToDo))).start();
+			whatToDo = s.nextInt();
+			switch (whatToDo) {
+			case 1:
+				getFilmScreenings(s, remoteObject);
+				break;
+			case 9:
+				System.exit(0);
+				break;
+			}
 		} while (true);
 	}
 
 	private void printAvailableOptions() {
-		System.out.println("[1] send Hello to server");
+		System.out.println("[1] Get film screenings");
+//		System.out.println("[2] Check free seats for specific screening");
+//		System.out.println("[3] Make a seat reservation");
 		System.out.println("[9] Exit");
 	}
-
-	private class actionController implements Runnable {
-		private int whatToDo;
-
-		public actionController(int whatToDo) {
-			this.whatToDo = whatToDo;
+	
+	private void getFilmScreenings(Scanner s, commonInterface remoteObject) throws RemoteException{
+		int whatToDo;
+		System.out.println("[1] Get all film screenings");
+		System.out.println("[2] Get filtered film screenings");
+		whatToDo = s.nextInt();
+		switch (whatToDo) {
+		case 1:
+			List<String> filmScreenings = remoteObject.getFilmScreenings();
+			System.out.println("Available movies:");
+			printStringList(filmScreenings);
+			break;
+		case 2:
+			System.out.println("not implemented yet!");
+			break;
 		}
-
-		public void run() {
-			try {
-				switch (whatToDo) {
-				case 1:
-					sendMessageToServer(remoteObject, "Hello!");
-					break;
-				case 9:
-					System.exit(0);
-					break;
-				}
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		private void sendMessageToServer(commonInterface remoteObject, String message) throws RemoteException {
-			if (remoteObject.messageServer(message) == true) {
-				System.out.println("Success!");
-			}
-		}
+	}
+	
+	private boolean printStringList(List<String> l){
+		IntStream.range(0,l.size()).forEach(idx -> System.out.println(idx + " - " + l.get(idx)));
+		System.out.println();
+		return true;
 	}
 }
