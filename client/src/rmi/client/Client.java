@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import rmi.common.*;
@@ -88,18 +89,22 @@ public class Client {
 
 	private Filter getUserFilters(Scanner s) {
 		Filter filters = new Filter();
-		SimpleDateFormat dt = new SimpleDateFormat("yyyyy.mm.dd hh:mm");
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 		do {
-			printFiltersMenu(filters);
+			printFiltersMenu(filters, dt);
 		} while (setFilters(filters, s, dt));
 		return filters;
 	}
 
-	private void printFiltersMenu(Filter filters) {
+	private void printFiltersMenu(Filter filters, SimpleDateFormat dt) {
 		System.out.println("Set filters:");
-		System.out.println((filters == null) || (filters.getMovieName() == null)
-				? "[1] Search screenings with a phrase of the movie name"
+		System.out.println((filters.getMovieName() == null) ? "[1] Search screenings with a phrase of the movie name"
 				: "[1] Change the phrase to search. Current phrase: " + filters.getMovieName());
+		System.out.println((filters.getMinDate() == null) ? "[2] Define a minimum date of screening"
+				: "[2] Change defined minimum date of screening. Current date: " + dt.format(filters.getMinDate()));
+		System.out.println((filters.getMaxDate() == null) ? "[3] Define a maximum date of screening"
+				: "[3] Change defined maximum date of screening. Current phrase: " + dt.format(filters.getMaxDate()));
+		System.out.println("[4] Clear all currently set filters");
 		System.out.println("[9] Search with currently set filters");
 	}
 
@@ -108,6 +113,24 @@ public class Client {
 		case 1:
 			System.out.println("Type a phrase to search");
 			filters.setMovieName(s.next());
+			return true;
+		case 2:
+			System.out.println("Type a date (format: \"YYYY.MM.DD HH:MM\")");
+			String minDate = s.next() + s.nextLine();
+			if(!filters.setMinDate(minDate, dt)){
+				System.out.println("Bad date format!");
+			}
+			return true;
+		case 3:
+			System.out.println("Type a date (format: \"YYYY.MM.DD HH:MM\")");
+			String maxDate = s.next() + s.nextLine();
+			if(!filters.setMaxDate(maxDate, dt)){
+				System.out.println("Bad date format!");
+			}
+			System.out.println("not implemented yet");
+			return true;
+		case 4:
+			filters.clearAllCurrentlySetFilters();
 			return true;
 		case 9:
 			return false;
