@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import rmi.common.*;
 
@@ -19,18 +20,30 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 
 	public List<String> getFilmScreenings() {
 		List<String> returnList = Collections.synchronizedList(new ArrayList<String>());
-		cinemaScreenings.forEach(screening -> returnList.add(((MovieScreening) screening).getScreeningInfo()));
+		IntStream.range(0, cinemaScreenings.size()).forEach(idx -> {
+			returnList.add("ID: " + idx + " - " + ((MovieScreening) cinemaScreenings.get(idx)).getScreeningInfo());
+		});
 		return returnList;
 	}
 
 	public List<String> getFilmScreenings(Filter filters) {
 		List<String> returnList = Collections.synchronizedList(new ArrayList<String>());
-		cinemaScreenings.forEach(screening -> {
-			if (checkIfScreeningMatchesFilters(((MovieScreening) screening), filters)) {
-				returnList.add(((MovieScreening) screening).getScreeningInfo());
+		IntStream.range(0, cinemaScreenings.size()).forEach(idx -> {
+			if (checkIfScreeningMatchesFilters(((MovieScreening) cinemaScreenings.get(idx)), filters)) {
+				returnList.add("ID: " + idx + " - " + ((MovieScreening) cinemaScreenings.get(idx)).getScreeningInfo());
 			}
 		});
 		return returnList;
+	}
+
+	public String getRoomArchitecture(int screeningId) {
+		try {
+			return ((MovieScreening) cinemaScreenings.get(screeningId)).getRoomArchitecture() + "\nLegend: \"-\" - screen; \"e\" -  empty seat; \"r\" - reserved seat \n";
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return "Invalid screening ID \n";
+		} catch (IndexOutOfBoundsException e) {
+			return "Invalid screening ID \n";
+		}
 	}
 
 	private boolean checkIfScreeningMatchesFilters(MovieScreening screening, Filter filters) {
@@ -67,4 +80,5 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 			cinemaScreeningsReference.add(new MovieScreening("Wolf Warrior", dt.parse("2017.19.08 22:00"), 1, "none"));
 		}
 	}
+
 }

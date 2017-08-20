@@ -49,6 +49,9 @@ public class Client {
 			case 1:
 				getFilmScreenings(s, remoteObject);
 				break;
+			case 2:
+				printRoomArchitecture(remoteObject, s);
+				break;
 			case 9:
 				System.exit(0);
 				break;
@@ -56,9 +59,14 @@ public class Client {
 		} while (true);
 	}
 
+	private void printRoomArchitecture(commonInterface remoteObject, Scanner s) throws RemoteException {
+		System.out.println("Type the ID number of the movie: ");
+		System.out.println(remoteObject.getRoomArchitecture(s.nextInt()));
+	}
+
 	private void printAvailableOptions() {
 		System.out.println("[1] Get film screenings");
-		// System.out.println("[2] Check free seats for specific screening");
+		System.out.println("[2] Check free seats for specific screening");
 		// System.out.println("[3] Make a seat reservation");
 		System.out.println("[9] Exit");
 	}
@@ -117,14 +125,14 @@ public class Client {
 		case 2:
 			System.out.println("Type a date (format: \"YYYY.MM.DD HH:MM\")");
 			String minDate = s.next() + s.nextLine();
-			if(!filters.setMinDate(minDate, dt)){
+			if (!filters.setMinDate(minDate, dt)) {
 				System.out.println("Bad date format!");
 			}
 			return true;
 		case 3:
 			System.out.println("Type a date (format: \"YYYY.MM.DD HH:MM\")");
 			String maxDate = s.next() + s.nextLine();
-			if(!filters.setMaxDate(maxDate, dt)){
+			if (!filters.setMaxDate(maxDate, dt)) {
 				System.out.println("Bad date format!");
 			}
 			System.out.println("not implemented yet");
