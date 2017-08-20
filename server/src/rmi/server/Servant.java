@@ -34,7 +34,7 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 	}
 
 	private boolean checkIfScreeningMatchesFilters(MovieScreening screening, Filter filters) {
-		if (filters.isMovieNameValid(screening.getMovieName())) {
+		if (filters.isMovieNameValid(screening.getMovieName()) && filters.isDateValid(screening.getScreeningDate())) {
 			return true;
 		} else {
 			return false;
