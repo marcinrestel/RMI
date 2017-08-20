@@ -74,11 +74,7 @@ public class Client {
 			filmScreenings = remoteObject.getFilmScreenings();
 			break;
 		case 2:
-			SimpleDateFormat dt = new SimpleDateFormat("yyyyy.mm.dd hh:mm");
-			Filter filters = new Filter();
-			System.out.println("Type a phrase to search");
-			filters.setMovieName(s.next());
-			filmScreenings = remoteObject.getFilmScreenings(filters);
+			filmScreenings = remoteObject.getFilmScreenings(getUserFilters(s));
 			break;
 		case 9:
 			return;
@@ -88,6 +84,37 @@ public class Client {
 		}
 		System.out.println("Available movies:");
 		printStringList(filmScreenings);
+	}
+
+	private Filter getUserFilters(Scanner s) {
+		Filter filters = new Filter();
+		SimpleDateFormat dt = new SimpleDateFormat("yyyyy.mm.dd hh:mm");
+		do {
+			printFiltersMenu(filters);
+		} while (setFilters(filters, s, dt));
+		return filters;
+	}
+
+	private void printFiltersMenu(Filter filters) {
+		System.out.println("Set filters:");
+		System.out.println((filters == null) || (filters.getMovieName() == null)
+				? "[1] Search screenings with a phrase of the movie name"
+				: "[1] Change the phrase to search. Current phrase: " + filters.getMovieName());
+		System.out.println("[9] Search with currently set filters");
+	}
+
+	private boolean setFilters(Filter filters, Scanner s, SimpleDateFormat dt) {
+		switch (s.nextInt()) {
+		case 1:
+			System.out.println("Type a phrase to search");
+			filters.setMovieName(s.next());
+			return true;
+		case 9:
+			return false;
+		default:
+			System.out.println("Bad entry");
+			return true;
+		}
 	}
 
 	private boolean printStringList(List<String> l) {
