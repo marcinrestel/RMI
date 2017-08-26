@@ -67,7 +67,7 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 
 		public void run() {
 			try {
-				SimpleDateFormat dt = new SimpleDateFormat("yyyyy.mm.dd hh:mm");
+				SimpleDateFormat dt = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 				addExampleMovieScreenings(dt);
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -77,11 +77,11 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 
 		private void addExampleMovieScreenings(SimpleDateFormat dt) throws ParseException {
 			cinemaScreeningsReference
-					.add(new MovieScreening("Forrest Gump", dt.parse("2017.19.08 10:00"), 1, "PG13 3D"));
-			cinemaScreeningsReference.add(new MovieScreening("The Emoji Movie", dt.parse("2017.19.08 8:00"), 2, "PG"));
-			cinemaScreeningsReference.add(new MovieScreening("Spider-Man", dt.parse("2017.19.08 14:00"), 1, "PG13"));
-			cinemaScreeningsReference.add(new MovieScreening("Spider-Man 2", dt.parse("2017.19.08 16:00"), 2, "PG13"));
-			cinemaScreeningsReference.add(new MovieScreening("Wolf Warrior", dt.parse("2017.19.08 22:00"), 1, "none"));
+					.add(new MovieScreening("Forrest Gump", dt.parse("2017.08.27 10:00"), 1, "PG13 3D"));
+			cinemaScreeningsReference.add(new MovieScreening("The Emoji Movie", dt.parse("2017.08.28 8:00"), 2, "PG"));
+			cinemaScreeningsReference.add(new MovieScreening("Spider-Man", dt.parse("2017.08.28 14:00"), 1, "PG13"));
+			cinemaScreeningsReference.add(new MovieScreening("Spider-Man 2", dt.parse("2017.08.28 16:00"), 2, "PG13"));
+			cinemaScreeningsReference.add(new MovieScreening("Wolf Warrior", dt.parse("2017.08.29 22:00"), 1, "none"));
 		}
 	}
 

@@ -63,7 +63,7 @@ public class Client {
 	}
 
 	private void printRoomArchitecture(commonInterface remoteObject, Scanner s) throws RemoteException {
-		System.out.println("Type the ID number of the movie: ");
+		System.out.print("Type the ID number of the movie: ");
 		System.out.println(remoteObject.getRoomArchitecture(s.nextInt()));
 	}
 
@@ -93,7 +93,7 @@ public class Client {
 		case 9:
 			return;
 		default:
-			System.out.println("Bad entry");
+			System.out.println("Bad entry!");
 			return;
 		}
 		System.out.println("Available movies:");
@@ -102,9 +102,9 @@ public class Client {
 
 	private void reserveSeat(commonInterface remoteObject, Scanner s) throws RemoteException {
 		int screeningId, seatNumber;
-		System.out.println("Type movie ID");
+		System.out.print("Type movie ID: ");
 		screeningId = s.nextInt();
-		System.out.println("Type seat number");
+		System.out.print("Type seat number: ");
 		seatNumber = s.nextInt();
 		System.out.println(remoteObject.reserveSeat(screeningId, seatNumber));
 	}
@@ -134,23 +134,22 @@ public class Client {
 	private boolean setFilters(Filter filters, Scanner s, SimpleDateFormat dt) {
 		switch (s.nextInt()) {
 		case 1:
-			System.out.println("Type a phrase to search");
+			System.out.print("Type a phrase to search: ");
 			filters.setMovieName(s.next());
 			return true;
 		case 2:
-			System.out.println("Type a date (format: \"YYYY.MM.DD HH:MM\")");
+			System.out.print("Type a date (format: \"YYYY.MM.DD HH:MM\"): ");
 			String minDate = s.next() + s.nextLine();
 			if (!filters.setMinDate(minDate, dt)) {
 				System.out.println("Bad date format!");
 			}
 			return true;
 		case 3:
-			System.out.println("Type a date (format: \"YYYY.MM.DD HH:MM\")");
+			System.out.print("Type a date (format: \"YYYY.MM.DD HH:MM\"): ");
 			String maxDate = s.next() + s.nextLine();
 			if (!filters.setMaxDate(maxDate, dt)) {
 				System.out.println("Bad date format!");
 			}
-			System.out.println("not implemented yet");
 			return true;
 		case 4:
 			filters.clearAllCurrentlySetFilters();
@@ -158,7 +157,7 @@ public class Client {
 		case 9:
 			return false;
 		default:
-			System.out.println("Bad entry");
+			System.out.println("Bad entry!");
 			return true;
 		}
 	}

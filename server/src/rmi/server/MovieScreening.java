@@ -111,7 +111,9 @@ public class MovieScreening {
 
 	public String seatReservation(int seatNumber) {
 		if (setSeatReserved(seatNumber)) {
-			return "Success";
+			String returnStr =  "You have reserved the seat number " + seatNumber + " at the movie " + name + "\n";
+			returnStr += "The screening will take place in the room number " + room + " on " + getHumanScreeningDate() + "\n";
+			return returnStr;
 		} else {
 			return "There is no seat with this number available (either reserved or not existing).";
 		}
@@ -127,8 +129,6 @@ public class MovieScreening {
 							seatsArchitecture[i][j] = RA.RESERVED;
 							return true;
 						}
-					} else if (seatsArchitecture[i][j] == RA.RESERVED) {
-						return false;
 					}
 					seatIndex++;
 				}
