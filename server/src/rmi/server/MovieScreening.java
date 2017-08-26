@@ -50,24 +50,31 @@ public class MovieScreening {
 		for (RA[] rows : roomArchitecture) {
 			for (RA place : rows) {
 				if (place == RA.NO_SEAT) {
-					architecture += " ";
+					architecture += "    ";
 				} else if (place == RA.SCREEN) {
-					architecture += "=";
+					architecture += "====";
 				} else {
 					architecture += "";
 				}
 			}
 			architecture += "\n";
 		}
-
+		int seatIndex = 1;
 		for (RA[] rows : seatsArchitecture) {
 			for (RA place : rows) {
 				if (place == RA.NO_SEAT) {
-					architecture += " ";
-				} else if (place == RA.EMPTY) {
-					architecture += "O";
-				} else if (place == RA.RESERVED) {
-					architecture += "R";
+					architecture += "    ";
+				} else if (place == RA.EMPTY || place == RA.RESERVED) {
+					if (place == RA.EMPTY) {
+						if (seatIndex >= 10) {
+							architecture += "(" + seatIndex + ")";
+						} else {
+							architecture += "( " + seatIndex + ")";
+						}
+					} else if (place == RA.RESERVED) {
+						architecture += "(--)";
+					}
+					seatIndex++;
 				} else {
 					architecture += "";
 				}
@@ -75,28 +82,58 @@ public class MovieScreening {
 			architecture += "\n";
 		}
 
-		architecture += "\nLegend: \"=\" - screen; \"O\" -  empty seat; \"R\" - reserved seat \n";
+		architecture += "\nLegend: \"=\" - screen; \"(16)\" -  empty seat; \"(--)\" - reserved seat \n";
 		return architecture;
 	}
 
 	private void createRoomArchitectureArray() {
 		roomArchitecture = new RA[][] {
 				{ RA.NO_SEAT, RA.NO_SEAT, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN,
-						RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.NO_SEAT, RA.NO_SEAT },
+						RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.NO_SEAT, RA.NO_SEAT },
 				{ RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT,
 						RA.NO_SEAT, RA.NO_SEAT } };
 		seatsArchitecture = new RA[][] {
-				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
-						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
-						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
-						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
-						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
-						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
-						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY } };
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY } };
+	}
+
+	public String seatReservation(int seatNumber) {
+		if (setSeatReserved(seatNumber)) {
+			return "Success";
+		} else {
+			return "There is no seat with this number available (either reserved or not existing).";
+		}
+	}
+
+	private boolean setSeatReserved(int seatNumber) {
+		int seatIndex = 1;
+		for (int i = 0, length = seatsArchitecture.length; i < length; i++) {
+			for (int j = 0, length2 = seatsArchitecture[i].length; j < length2; j++) {
+				if (seatsArchitecture[i][j] == RA.EMPTY || seatsArchitecture[i][j] == RA.RESERVED) {
+					if (seatsArchitecture[i][j] == RA.EMPTY) {
+						if (seatNumber == seatIndex) {
+							seatsArchitecture[i][j] = RA.RESERVED;
+							return true;
+						}
+					} else if (seatsArchitecture[i][j] == RA.RESERVED) {
+						return false;
+					}
+					seatIndex++;
+				}
+			}
+		}
+		return false;
 	}
 }

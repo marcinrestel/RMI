@@ -52,6 +52,9 @@ public class Client {
 			case 2:
 				printRoomArchitecture(remoteObject, s);
 				break;
+			case 3:
+				reserveSeat(remoteObject, s);
+				break;
 			case 9:
 				System.exit(0);
 				break;
@@ -95,6 +98,15 @@ public class Client {
 		}
 		System.out.println("Available movies:");
 		printStringList(filmScreenings);
+	}
+
+	private void reserveSeat(commonInterface remoteObject, Scanner s) throws RemoteException {
+		int screeningId, seatNumber;
+		System.out.println("Type movie ID");
+		screeningId = s.nextInt();
+		System.out.println("Type seat number");
+		seatNumber = s.nextInt();
+		System.out.println(remoteObject.reserveSeat(screeningId, seatNumber));
 	}
 
 	private Filter getUserFilters(Scanner s) {
