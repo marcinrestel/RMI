@@ -65,14 +65,16 @@ public class Client {
 	}
 
 	private void printAvailableOptions() {
+		System.out.println("------------------------------------");
 		System.out.println("[1] Get film screenings");
 		System.out.println("[2] Check free seats for specific screening");
-		// System.out.println("[3] Make a seat reservation");
+		System.out.println("[3] Make a seat reservation");
 		System.out.println("[9] Exit");
 	}
 
 	private void getFilmScreenings(Scanner s, commonInterface remoteObject) throws RemoteException, ParseException {
 		int whatToDo;
+		System.out.println("------------------------------------");
 		System.out.println("[1] Get all film screenings");
 		System.out.println("[2] Get filtered film screenings");
 		System.out.println("[9] Go back");
@@ -105,6 +107,7 @@ public class Client {
 	}
 
 	private void printFiltersMenu(Filter filters, SimpleDateFormat dt) {
+		System.out.println("------------------------------------");
 		System.out.println("Set filters:");
 		System.out.println((filters.getMovieName() == null) ? "[1] Search screenings with a phrase of the movie name"
 				: "[1] Change the phrase to search. Current phrase: " + filters.getMovieName());

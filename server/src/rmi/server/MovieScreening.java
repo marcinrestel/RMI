@@ -10,6 +10,7 @@ public class MovieScreening {
 	private String description;
 	private int room;
 	private RA[][] roomArchitecture;
+	private RA[][] seatsArchitecture;
 
 	public MovieScreening(String name, Date screeningDate, int room, String description) {
 		this.name = name;
@@ -43,42 +44,59 @@ public class MovieScreening {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm");
 		return sdf.format(getScreeningDate());
 	}
-	
-	public String getRoomArchitecture(){
+
+	public String getRoomArchitecture() {
 		String architecture = "";
-		for(RA[] rows : roomArchitecture){
-			for (RA place : rows){
-				if(place == RA.NO_SEAT){
+		for (RA[] rows : roomArchitecture) {
+			for (RA place : rows) {
+				if (place == RA.NO_SEAT) {
 					architecture += " ";
-				}
-				else if(place == RA.SCREEN){
-					architecture += "-";
-				}
-				else if(place == RA.EMPTY){
-					architecture += "e";
-				}
-				else if(place == RA.RESERVED){
-					architecture += "r";
-				}
-				else{
+				} else if (place == RA.SCREEN) {
+					architecture += "=";
+				} else {
 					architecture += "";
 				}
 			}
 			architecture += "\n";
 		}
+
+		for (RA[] rows : seatsArchitecture) {
+			for (RA place : rows) {
+				if (place == RA.NO_SEAT) {
+					architecture += " ";
+				} else if (place == RA.EMPTY) {
+					architecture += "O";
+				} else if (place == RA.RESERVED) {
+					architecture += "R";
+				} else {
+					architecture += "";
+				}
+			}
+			architecture += "\n";
+		}
+
+		architecture += "\nLegend: \"=\" - screen; \"O\" -  empty seat; \"R\" - reserved seat \n";
 		return architecture;
 	}
 
 	private void createRoomArchitectureArray() {
-		roomArchitecture = new RA[][]{
-			  { RA.NO_SEAT, RA.NO_SEAT, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.NO_SEAT, RA.NO_SEAT },
-			  { RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT },
-			  { RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-			  { RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-			  { RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-			  { RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-			  { RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-			  { RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY }
-			};
+		roomArchitecture = new RA[][] {
+				{ RA.NO_SEAT, RA.NO_SEAT, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN,
+						RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.SCREEN, RA.NO_SEAT, RA.NO_SEAT },
+				{ RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT, RA.NO_SEAT,
+						RA.NO_SEAT, RA.NO_SEAT } };
+		seatsArchitecture = new RA[][] {
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.NO_SEAT,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY } };
 	}
 }

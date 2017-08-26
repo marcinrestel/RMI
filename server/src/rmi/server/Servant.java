@@ -38,7 +38,7 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 
 	public String getRoomArchitecture(int screeningId) {
 		try {
-			return ((MovieScreening) cinemaScreenings.get(screeningId)).getRoomArchitecture() + "\nLegend: \"-\" - screen; \"e\" -  empty seat; \"r\" - reserved seat \n";
+			return ((MovieScreening) cinemaScreenings.get(screeningId)).getRoomArchitecture();
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return "Invalid screening ID \n";
 		} catch (IndexOutOfBoundsException e) {
