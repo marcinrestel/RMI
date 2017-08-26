@@ -49,6 +49,10 @@ public class Servant extends UnicastRemoteObject implements commonInterface {
 	public String reserveSeat(int screeningId, int seatNumber){
 		return ((MovieScreening) cinemaScreenings.get(screeningId)).seatReservation(seatNumber);
 	}
+	
+	public String cancelReservation(int screeningId, int seatNumber, int deletionCode){
+		return ((MovieScreening) cinemaScreenings.get(screeningId)).reservationCancellation(seatNumber, deletionCode);
+	}
 
 	private boolean checkIfScreeningMatchesFilters(MovieScreening screening, Filter filters) {
 		if (filters.isMovieNameValid(screening.getMovieName()) && filters.isDateValid(screening.getScreeningDate())) {

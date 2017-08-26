@@ -55,6 +55,9 @@ public class Client {
 			case 3:
 				reserveSeat(remoteObject, s);
 				break;
+			case 4:
+				cancelReservation(remoteObject, s);
+				break;
 			case 9:
 				System.exit(0);
 				break;
@@ -72,15 +75,20 @@ public class Client {
 		System.out.println("[1] Get film screenings");
 		System.out.println("[2] Check free seats for specific screening");
 		System.out.println("[3] Make a seat reservation");
+		System.out.println("[4] Cancel seat reservation");
 		System.out.println("[9] Exit");
 	}
-
-	private void getFilmScreenings(Scanner s, commonInterface remoteObject) throws RemoteException, ParseException {
-		int whatToDo;
+	
+	private void printAvailableOptionsForGetFilmScreenings() {
 		System.out.println("------------------------------------");
 		System.out.println("[1] Get all film screenings");
 		System.out.println("[2] Get filtered film screenings");
 		System.out.println("[9] Go back");
+	}
+	
+	private void getFilmScreenings(Scanner s, commonInterface remoteObject) throws RemoteException, ParseException {
+		int whatToDo;
+		printAvailableOptionsForGetFilmScreenings();
 		whatToDo = s.nextInt();
 		List<String> filmScreenings;
 		switch (whatToDo) {
@@ -107,6 +115,17 @@ public class Client {
 		System.out.print("Type seat number: ");
 		seatNumber = s.nextInt();
 		System.out.println(remoteObject.reserveSeat(screeningId, seatNumber));
+	}
+	
+	private void cancelReservation(commonInterface remoteObject, Scanner s) throws RemoteException {
+		int screeningId, seatNumber, deletionCode;
+		System.out.print("Type movie ID: ");
+		screeningId = s.nextInt();
+		System.out.print("Type seat number: ");
+		seatNumber = s.nextInt();
+		System.out.print("Type deletion code: ");
+		deletionCode = s.nextInt();
+		System.out.println(remoteObject.cancelReservation(screeningId, seatNumber, deletionCode));
 	}
 
 	private Filter getUserFilters(Scanner s) {

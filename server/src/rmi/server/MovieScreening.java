@@ -2,6 +2,7 @@ package rmi.server;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 public class MovieScreening {
 
@@ -11,6 +12,9 @@ public class MovieScreening {
 	private int room;
 	private RA[][] roomArchitecture;
 	private RA[][] seatsArchitecture;
+	private int[][] reservationDeletionCodesArray;
+
+	private Random randomGenerator = new Random();
 
 	public MovieScreening(String name, Date screeningDate, int room, String description) {
 		this.name = name;
@@ -18,6 +22,7 @@ public class MovieScreening {
 		this.room = room;
 		this.description = description;
 		createRoomArchitectureArray();
+		this.reservationDeletionCodesArray = new int[seatsArchitecture.length][seatsArchitecture[0].length];
 	}
 
 	public String getScreeningInfo() {
@@ -101,8 +106,8 @@ public class MovieScreening {
 						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
 				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
 						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
-				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY,
-						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
+				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
+						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
 				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.NO_SEAT, RA.EMPTY, RA.EMPTY,
 						RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY },
 				{ RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY, RA.EMPTY,
@@ -110,24 +115,59 @@ public class MovieScreening {
 	}
 
 	public String seatReservation(int seatNumber) {
-		if (setSeatReserved(seatNumber)) {
-			String returnStr =  "You have reserved the seat number " + seatNumber + " at the movie " + name + "\n";
-			returnStr += "The screening will take place in the room number " + room + " on " + getHumanScreeningDate() + "\n";
+		int deletionCode = setSeatReserved(seatNumber);
+		if (deletionCode != -1) {
+			String returnStr = "You have reserved the seat number " + seatNumber + " at the movie " + name + ".\n";
+			returnStr += "The screening will take place in the room number " + room + " on " + getHumanScreeningDate()
+					+ ".\n";
+			returnStr += "To cancel the reservation use code: " + deletionCode + ".";
 			return returnStr;
 		} else {
 			return "There is no seat with this number available (either reserved or not existing).";
 		}
 	}
 
-	private boolean setSeatReserved(int seatNumber) {
+	private int setSeatReserved(int seatNumber) {
 		int seatIndex = 1;
 		for (int i = 0, length = seatsArchitecture.length; i < length; i++) {
 			for (int j = 0, length2 = seatsArchitecture[i].length; j < length2; j++) {
 				if (seatsArchitecture[i][j] == RA.EMPTY || seatsArchitecture[i][j] == RA.RESERVED) {
-					if (seatsArchitecture[i][j] == RA.EMPTY) {
-						if (seatNumber == seatIndex) {
+					if (seatNumber == seatIndex) {
+						if (seatsArchitecture[i][j] == RA.EMPTY) {
 							seatsArchitecture[i][j] = RA.RESERVED;
-							return true;
+							reservationDeletionCodesArray[i][j] = randomGenerator.nextInt(89999) + 10000;
+							return reservationDeletionCodesArray[i][j];
+						}
+					}
+					seatIndex++;
+				}
+			}
+		}
+		return -1;
+	}
+
+	public String reservationCancellation(int seatNumber, int deletionCode) {
+		if (cancelReservation(seatNumber, deletionCode)) {
+			return "Reservation successfully cancelled.";
+		} else {
+			return "You cannot cancel a reservation for this seat (seat not reserved, seat not existing or wrong deletion code).";
+		}
+	}
+
+	private boolean cancelReservation(int seatNumber, int deletionCode) {
+		int seatIndex = 1;
+		for (int i = 0, length = seatsArchitecture.length; i < length; i++) {
+			for (int j = 0, length2 = seatsArchitecture[i].length; j < length2; j++) {
+				if (seatsArchitecture[i][j] == RA.EMPTY || seatsArchitecture[i][j] == RA.RESERVED) {
+					if (seatNumber == seatIndex) {
+						if (seatsArchitecture[i][j] == RA.RESERVED) {
+							if (reservationDeletionCodesArray[i][j] == deletionCode) {
+								seatsArchitecture[i][j] = RA.EMPTY;
+								reservationDeletionCodesArray[i][j] = 0;
+								return true;
+							}
+						} else {
+							return false;
 						}
 					}
 					seatIndex++;
